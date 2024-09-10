@@ -15,6 +15,9 @@
         android:theme="@style/Theme.FoodBits"
         tools:targetApi="31">
         <activity
+            android:name=".CreateRecipe"
+            android:exported="false" />
+        <activity
             android:name=".LogIn"
             android:exported="false" />
         <activity
@@ -27,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateRecipe"
+            android:name=".CreateRecipe1"
             android:exported="false" />
         <activity
             android:name=".Profile"

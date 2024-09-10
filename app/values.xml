@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">383223546646</string>
+    <string name="google_api_key" translatable="false">AIzaSyBHx2m-2TUHz60QPtp8wB6JmjKvHhk-YKk</string>
+    <string name="google_app_id" translatable="false">1:383223546646:android:d20bfecd2b626a5d32c637</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBHx2m-2TUHz60QPtp8wB6JmjKvHhk-YKk</string>
+    <string name="google_storage_bucket" translatable="false">foodbits-95808.appspot.com</string>
+    <string name="project_id" translatable="false">foodbits-95808</string>
+</resources>

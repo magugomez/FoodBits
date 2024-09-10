@@ -1,5 +1,6 @@
 package com.example.foodbits
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -29,6 +30,7 @@ class SignUp : AppCompatActivity() {
         val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
         val confirmPasswordEditText = findViewById<EditText>(R.id.editTextConfirmPassword)
         val signUpButton = findViewById<Button>(R.id.buttonSignUp)
+        val logInButton = findViewById<Button>(R.id.buttonLogIn)
 
         signUpButton.setOnClickListener {
             val username = usernameEditText.text.toString().trim()
@@ -43,6 +45,11 @@ class SignUp : AppCompatActivity() {
             }
         }
 
+        logInButton.setOnClickListener {
+            val intent = Intent(this, LogIn::class.java)
+            startActivity(intent)
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -54,7 +61,6 @@ class SignUp : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Usuario registrado exitosamente
                     val userId = auth.currentUser?.uid
                     val user = hashMapOf(
                         "username" to username,
@@ -66,6 +72,9 @@ class SignUp : AppCompatActivity() {
                             .set(user)
                             .addOnSuccessListener {
                                 Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, Home::class.java)
+                                startActivity(intent)
+                                finish()
                             }
                             .addOnFailureListener { e ->
                                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()

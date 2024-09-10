@@ -5,7 +5,15 @@ plugins {
 }
 buildscript {
     dependencies {
-        classpath("com.google.gms:google-services:4.3.15")
+        repositories {
+            google()
+            mavenCentral()
+        }
+        dependencies {
+            classpath (libs.gradle)
+            classpath (libs.google.services)
+            classpath (libs.google.services.v4315)
+        }
     }
 }
 allprojects {

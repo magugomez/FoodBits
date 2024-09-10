@@ -1,5 +1,6 @@
 package com.example.foodbits
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.google.android.material.navigation.NavigationView
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -52,16 +54,24 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_home -> {
-                // Código para la opción Inicio
+        return when (item.itemId) {
+            R.id.action_home -> {
+                val intent = Intent(this, Home::class.java)
+                startActivity(intent)
+                true
             }
-            R.id.nav_settings -> {
-                // Código para la opción Configuración
+            R.id.action_create_recipe -> {
+                val intent = Intent(this, CreateRecipe::class.java)
+                startActivity(intent)
+                true
             }
+            R.id.action_profile -> {
+                val intent = Intent(this, Profile::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
     }
 
     override fun onBackPressed() {

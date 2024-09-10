@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomBottomNavView" parent="Widget.Design.BottomNavigationView">
+        <item name="itemActiveIndicatorStyle">@color/main_color</item>
+    </style>
+</resources>

@@ -1,5 +1,13 @@
 package com.example.foodbits
 
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+
 class RecipeAdapter(private val recipeList: List<Recipe>) :
     RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
@@ -19,7 +27,6 @@ class RecipeAdapter(private val recipeList: List<Recipe>) :
         val recipe = recipeList[position]
         holder.recipeName.text = recipe.name
         holder.recipeDescription.text = recipe.description
-        // Cargar imagen con una librería como Glide o Picasso
         Glide.with(holder.recipeImage.context).load(recipe.imageUrl).into(holder.recipeImage)
     }
 

@@ -1,6 +1,7 @@
 package com.example.foodbits
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LogIn : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -22,7 +24,9 @@ class LogIn : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        lateinit var auth: FirebaseAuth
+
+        val auth: FirebaseAuth = FirebaseAuth.getInstance()
+        val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
         val editTextEmailOrUsername = findViewById<EditText>(R.id.editTextEmailOrUsername)
         val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
@@ -35,12 +39,12 @@ class LogIn : AppCompatActivity() {
                 auth.signInWithEmailAndPassword(emailOrUsername, password)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
-                            // Sign in success
                             Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-                            // Redirect to another activity
+                            val intent = Intent(this, Home::class.java)
+                            startActivity(intent)
+                            finish()
                         } else {
-                            // If sign in fails
-                            Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show()
+                            handleUsernameLogin(emailOrUsername, password)
                         }
                     }
             } else {
@@ -51,5 +55,39 @@ class LogIn : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun handleUsernameLogin(username: String, password: String) {
+        val firestore = FirebaseFirestore.getInstance()
+
+        firestore.collection("users")
+            .whereEqualTo("username", username)
+            .get()
+            .addOnSuccessListener { result ->
+                if (result.isEmpty) {
+                    Toast.makeText(this, "Username not found", Toast.LENGTH_SHORT).show()
+                } else {
+                    val userDoc = result.documents.first()
+                    val email = userDoc.getString("email")
+
+                    email?.let {
+                        val auth = FirebaseAuth.getInstance()
+                        auth.signInWithEmailAndPassword(it, password)
+                            .addOnCompleteListener(this) { task ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(this, Home::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                } else {
+                                    Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                    } ?: Toast.makeText(this, "Error: Email not found", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
     }
 }
